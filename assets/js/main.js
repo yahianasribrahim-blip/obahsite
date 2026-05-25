@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const res = await fetch('/api/contact', { method: 'POST', body: new FormData(form) });
         const data = await res.json().catch(() => ({}));
         if (res.ok) {
-          window.location.href = '/thanks.html';
+          window.location.href = '/thanks';
           return;
         }
         status.textContent = data.error || 'Something went wrong. Please call us at 613-825-7921.';
