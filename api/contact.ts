@@ -102,28 +102,38 @@ export default async function handler(req: Request): Promise<Response> {
     return json({ error: 'Send failed' }, 500);
   }
 
-  // Fire-and-forget log to Google Sheets via Apps Script webhook.
-  // Failure here must NOT break the form — the email is the critical path.
-  const sheetsWebhook = process.env.SHEETS_WEBHOOK_URL;
-  if (sheetsWebhook) {
+  // Fire-and-forget log to Supabase. Failure here must NOT break the form —
+  // the email is the critical path.
+  const supabaseUrl = process.env.SUPABASE_URL;
+  const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (supabaseUrl && supabaseKey) {
     try {
-      await fetch(sheetsWebhook, {
+      const res = await fetch(`${supabaseUrl}/rest/v1/leads`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          apikey: supabaseKey,
+          Authorization: `Bearer ${supabaseKey}`,
+          Prefer: 'return=minimal',
+        },
         body: JSON.stringify({
           source: gclid ? 'ADS' : 'Direct',
-          gclid,
+          gclid: gclid || null,
           name,
           email,
-          phone,
-          subject,
+          phone: phone || null,
+          subject: subject || null,
           message,
-          landing,
-          referrer,
+          landing: landing || null,
+          referrer: referrer || null,
         }),
       });
+      if (!res.ok) {
+        const errText = await res.text().catch(() => '<no body>');
+        console.error('[OBAH-CONTACT] Supabase insert failed:', res.status, errText);
+      }
     } catch (err) {
-      console.error('[OBAH-CONTACT] Sheets webhook failed (non-fatal):', err);
+      console.error('[OBAH-CONTACT] Supabase exception (non-fatal):', err);
     }
   }
 
