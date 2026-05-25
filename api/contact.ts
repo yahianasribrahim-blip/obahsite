@@ -55,7 +55,7 @@ export default async function handler(req: Request): Promise<Response> {
 
   const source = gclid
     ? `*** GOOGLE ADS LEAD ***  (gclid: ${gclid})`
-    : 'Direct / organic visit (no gclid)';
+    : 'NO GCLID — likely manual URL entry, shared link, or test (NOT a tracked ad click)';
 
   const text = [
     source,
