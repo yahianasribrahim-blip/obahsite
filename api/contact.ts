@@ -51,6 +51,15 @@ export default async function handler(req: Request): Promise<Response> {
     return json({ error: 'Server misconfigured' }, 500);
   }
 
+  const recipients = destination
+    .split(',')
+    .map((e) => e.trim())
+    .filter((e) => e.length > 0);
+  if (recipients.length === 0) {
+    console.error('[OBAH-CONTACT] DESTINATION_EMAIL parsed to zero recipients');
+    return json({ error: 'Server misconfigured' }, 500);
+  }
+
   const resend = new Resend(apiKey);
 
   const source = gclid
@@ -78,7 +87,7 @@ export default async function handler(req: Request): Promise<Response> {
   try {
     const result = await resend.emails.send({
       from: 'OBAH Website <noreply@progressly.us>',
-      to: destination,
+      to: recipients,
       replyTo: email,
       subject: `${subjectPrefix}New website inquiry: ${subject || 'No subject'}`,
       text,
