@@ -1,4 +1,17 @@
 // Mobile nav toggle
+// Capture Google Click ID (gclid) on landing so we can attribute the lead
+// even after the user navigates around the site before submitting.
+(function captureGclid() {
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const gclid = params.get('gclid');
+    if (gclid) {
+      sessionStorage.setItem('obah_gclid', gclid);
+      sessionStorage.setItem('obah_landing', window.location.href);
+    }
+  } catch (e) { /* ignore */ }
+})();
+
 document.addEventListener('DOMContentLoaded', () => {
   const toggle = document.querySelector('.nav-toggle');
   const nav = document.querySelector('.nav');
@@ -38,7 +51,14 @@ document.addEventListener('DOMContentLoaded', () => {
       submit.innerHTML = 'Sending...';
       status.style.display = 'none';
       try {
-        const res = await fetch('/api/contact', { method: 'POST', body: new FormData(form) });
+        const fd = new FormData(form);
+        const gclid = sessionStorage.getItem('obah_gclid') || '';
+        const landing = sessionStorage.getItem('obah_landing') || '';
+        const referrer = document.referrer || '';
+        if (gclid) fd.append('gclid', gclid);
+        if (landing) fd.append('landing', landing);
+        if (referrer) fd.append('referrer', referrer);
+        const res = await fetch('/api/contact', { method: 'POST', body: fd });
         const data = await res.json().catch(() => ({}));
         if (res.ok) {
           window.location.href = '/thanks';
