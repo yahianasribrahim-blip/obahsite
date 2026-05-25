@@ -97,12 +97,37 @@ export default async function handler(req: Request): Promise<Response> {
       console.error('[OBAH-CONTACT] Resend error:', result.error);
       return json({ error: 'Send failed' }, 500);
     }
-
-    return json({ ok: true });
   } catch (err: unknown) {
-    console.error('[OBAH-CONTACT] Exception:', err);
+    console.error('[OBAH-CONTACT] Resend exception:', err);
     return json({ error: 'Send failed' }, 500);
   }
+
+  // Fire-and-forget log to Google Sheets via Apps Script webhook.
+  // Failure here must NOT break the form — the email is the critical path.
+  const sheetsWebhook = process.env.SHEETS_WEBHOOK_URL;
+  if (sheetsWebhook) {
+    try {
+      await fetch(sheetsWebhook, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          source: gclid ? 'ADS' : 'Direct',
+          gclid,
+          name,
+          email,
+          phone,
+          subject,
+          message,
+          landing,
+          referrer,
+        }),
+      });
+    } catch (err) {
+      console.error('[OBAH-CONTACT] Sheets webhook failed (non-fatal):', err);
+    }
+  }
+
+  return json({ ok: true });
 }
 
 function json(body: Record<string, unknown>, status = 200): Response {
