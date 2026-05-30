@@ -368,6 +368,22 @@ a.contact-box:hover h4 { color: var(--primary); }
 @media (max-width: 720px) {
   .cta-strip-inner { flex-direction: column; text-align: center; }
   .cta-strip-actions { justify-content: center; width: 100%; }
+  .hero {
+    height: 620px;
+    background-size: 200% auto;
+    background-position: right bottom;
+    background-repeat: no-repeat;
+    background-color: var(--secondary);
+    align-items: flex-start;
+    padding-top: 50px;
+  }
+  .hero::before {
+    background: linear-gradient(180deg,
+      rgba(31,59,91,.95) 0%,
+      rgba(31,59,91,.9) 40%,
+      rgba(31,59,91,.5) 48%,
+      transparent 52%);
+  }
 }
 
 /* ===== FOOTER ===== */
