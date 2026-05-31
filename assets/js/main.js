@@ -19,6 +19,16 @@ document.addEventListener('DOMContentLoaded', () => {
     toggle.addEventListener('click', () => nav.classList.toggle('open'));
   }
 
+  // Sticky mobile call CTA (visible only on phones via CSS)
+  if (!document.querySelector('.mobile-call-cta')) {
+    const callBtn = document.createElement('a');
+    callBtn.href = 'tel:613-825-7921';
+    callBtn.className = 'mobile-call-cta';
+    callBtn.setAttribute('aria-label', 'Call Ottawa Barrhaven Animal Hospital');
+    callBtn.innerHTML = '<i class="fa-solid fa-phone"></i> Call Now';
+    document.body.appendChild(callBtn);
+  }
+
   // Scroll to top button
   const scrollBtn = document.querySelector('.scroll-top');
   if (scrollBtn) {

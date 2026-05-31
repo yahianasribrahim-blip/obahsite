@@ -36,7 +36,7 @@ export default async function handler(req: Request): Promise<Response> {
     return json({ error: 'Invalid request body' }, 400);
   }
 
-  if (!name || !email || !message) {
+  if (!name || !email) {
     return json({ error: 'Missing required fields' }, 400);
   }
 

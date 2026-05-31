@@ -75,13 +75,21 @@
         </div>
         <div class="form-row">
           <input type="tel" name="phone" placeholder="Phone number">
-          <input type="text" name="subject" placeholder="Subject">
+          <select name="subject" required>
+            <option value="">What's this about?</option>
+            <option value="Book a Wellness Visit">Book a Wellness Visit</option>
+            <option value="Urgent / Same-Day Appointment">Urgent / Same-Day Appointment</option>
+            <option value="Surgery Consultation">Surgery Consultation</option>
+            <option value="Dental">Dental</option>
+            <option value="General Inquiry">General Inquiry</option>
+            <option value="Other">Other</option>
+          </select>
         </div>
         <div class="form-row form-row--single">
-          <textarea name="message" placeholder="Write your message..." required></textarea>
+          <textarea name="message" placeholder="Anything else we should know? (optional)"></textarea>
         </div>
         <div class="form-status" id="form-status" style="display:none; margin-bottom:14px;"></div>
-        <button type="submit" class="btn" id="contact-submit"><i class="fa-solid fa-paper-plane"></i> Submit Message</button>
+        <button type="submit" class="btn" id="contact-submit"><i class="fa-solid fa-paper-plane"></i> Book My Visit</button>
       </form>
       <div class="map">
         <iframe src="https://www.google.com/maps?q=900+Greenbank+Rd+Ottawa+K2J+1S8&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Hospital location"></iframe>
