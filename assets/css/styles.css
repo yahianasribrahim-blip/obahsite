@@ -560,35 +560,3 @@ a.contact-box:hover h4 { color: var(--primary); }
 }
 .contact-form select:invalid { color: #999; }
 
-/* ===== STICKY MOBILE CALL CTA ===== */
-.mobile-call-cta {
-  display: none;
-  position: fixed;
-  bottom: 18px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: var(--primary);
-  color: #fff;
-  padding: 14px 30px;
-  border-radius: 999px;
-  box-shadow: 0 8px 26px rgba(244, 123, 59, 0.5);
-  font-weight: 700;
-  font-size: 1rem;
-  z-index: 999;
-  text-decoration: none;
-  align-items: center;
-  gap: 10px;
-  letter-spacing: 0.3px;
-  transition: background .2s, transform .2s;
-}
-.mobile-call-cta:hover, .mobile-call-cta:active {
-  background: var(--primary-dark);
-  color: #fff;
-  transform: translateX(-50%) translateY(-2px);
-}
-.mobile-call-cta i { font-size: 0.95rem; }
-@media (max-width: 720px) {
-  .mobile-call-cta { display: inline-flex; }
-  body { padding-bottom: 78px; }
-  .scroll-top { bottom: 84px; right: 18px; width: 42px; height: 42px; font-size: 1.1rem; }
-}
